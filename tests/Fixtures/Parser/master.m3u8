@@ -1,0 +1,7 @@
+#EXTM3U
+#FOO
+#BAR:20
+#MOZ:POZ
+foo://bar.foo/playlist_1
+#MOZ:MOZ
+foo://bar.foo/playlist_2

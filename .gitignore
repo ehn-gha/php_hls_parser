@@ -1,0 +1,6 @@
+tmp
+vendor
+.*.cache
+*.lock
+.idea
+main.php

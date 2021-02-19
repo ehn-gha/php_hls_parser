@@ -1,0 +1,54 @@
+{
+    "name": "ehngha/hls-parser",
+    "description": "HLS file format parser",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Allegra Geller",
+            "email": "allegra.gl@ehngha.com",
+            "role": "Uly"
+        },
+        {
+            "name": "Kim Jery",
+            "email": "kim.jery@ehngha.com",
+            "role": "Xel"
+        },
+        {
+            "name": "Nathaniel Demerest",
+            "email": "nathaniel.demerest@ehngha.com",
+            "role": "Cha"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Ehngha\\Lib\\Hls\\": "./src"
+        },
+        "files": [
+            "./src/Entity/functions.php",
+            "./src/Url/functions.php",
+            "./src/functions.php",
+            "./src/Exception/HlsException.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ehngha\\Test\\Lib\\Hls\\": "./tests"
+        }
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^5.2",
+        "symfony/http-client": "^5.2",
+        "symfony/event-dispatcher": "^5.2"
+    },
+    "require": {
+        "symfony/http-client-contracts": "^2.3",
+        "symfony/event-dispatcher-contracts": "^2.2",
+        "ehngha/copy": "^1.0"
+    },
+    "suggest": {
+        "symfony/http-client": "Symfony http client contract implementation provided by Symfony",
+        "symfony/event-dispatcher": "Symfony event dispatcher contract implementation provided by Symfony"
+    }
+}
