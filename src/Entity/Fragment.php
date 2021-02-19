@@ -26,11 +26,15 @@ final class Fragment implements JsonSerializable
      * Fragment constructor.
      * @param Playlist|null $playlist
      *   Playlist attached to the fragment
+     * @param string $source
+     *   Fragment source.
+     *   The source is NEVER kept after the serialization process
      * @param array $attributes
      *   Attributes describing the fragment
      */
     public function __construct(
         public ?Playlist $playlist,
+        public string $source = "",
         public array $attributes = []
     )
     {
