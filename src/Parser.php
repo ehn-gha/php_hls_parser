@@ -164,7 +164,7 @@ final class Parser implements ParserInterface
 
     private static function explodeTag(string $tagLine): array
     {
-        $tagLine = explode(":", $tagLine);
+        $tagLine = explode(":", $tagLine, 2);
         $tagLine[0] = substr($tagLine[0], 1);
         $tagLine[1] ??= "";
 
