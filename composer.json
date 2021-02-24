@@ -45,7 +45,8 @@
     "require": {
         "symfony/http-client-contracts": "^2.3",
         "symfony/event-dispatcher-contracts": "^2.2",
-        "ehngha/copy": "^1.0"
+        "ehngha/copy": "^1.0",
+        "php": ">=8.0"
     },
     "suggest": {
         "symfony/http-client": "Symfony http client contract implementation provided by Symfony",
