@@ -18,6 +18,7 @@ use Ehngha\Lib\Hls\Entity\FragmentCollection;
 use Ehngha\Lib\Hls\Entity\Playlist;
 use Ehngha\Lib\Hls\Exception\HlsException;
 use PHPUnit\Framework\TestCase;
+use function array_map;
 use function count;
 use function iterator_to_array;
 use function str_repeat;
@@ -78,6 +79,21 @@ final class FragmentCollectionTest extends TestCase
         $collection = new FragmentCollection($playlist);
 
         unset($collection[0]);
+    }
+
+    public function testSlice(): void
+    {
+        $collection = new FragmentCollection(new Playlist());
+        for ($i = 0; $i < 50; ++$i) {
+            $collection[] = new Fragment(null, "foo_{$i}");
+        }
+        $collection->slice(5);
+
+        $this->assertSame(5, count($collection));
+
+        $this->assertSame(["foo_45", "foo_46", "foo_47", "foo_48", "foo_49"], array_map(function(Fragment $fragment): string {
+            return $fragment->source;
+        }, iterator_to_array($collection->getIterator())));
     }
 
     public function testCount(): void

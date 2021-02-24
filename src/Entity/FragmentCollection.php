@@ -19,6 +19,7 @@ use Ehngha\Lib\Hls\Exception\HlsException;
 use IteratorAggregate;
 use JsonSerializable;
 use function array_map;
+use function array_slice;
 use function count;
 
 final class FragmentCollection implements IteratorAggregate, JsonSerializable, ArrayAccess, Countable
@@ -62,6 +63,15 @@ final class FragmentCollection implements IteratorAggregate, JsonSerializable, A
     public function offsetUnset($offset)
     {
         throw new HlsException("Cannot unset fragment from a fragment collection");
+    }
+
+    /**
+     * Slice the collection from the end
+     * @param int $offset
+     */
+    public function slice(int $offset): void
+    {
+        $this->fragments = array_slice($this->fragments, -$offset, $offset);
     }
 
     public function jsonSerialize(): array

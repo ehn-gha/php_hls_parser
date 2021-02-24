@@ -32,6 +32,7 @@ final class Resolver
     private const QUERY = '?';
     private const ANCHOR = '#';
 
+    /** @codeCoverageIgnore  */
     private function __construct()
     {}
 
