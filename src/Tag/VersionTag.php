@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ehngha\Lib\Hls\Tag;
 
+use Ehngha\Lib\Hls\Entity\AttributeEnum;
 use Ehngha\Lib\Hls\Entity\Fragment;
 use Ehngha\Lib\Hls\Entity\FragmentCollection;
 use Ehngha\Lib\Hls\Entity\Playlist;
@@ -31,7 +32,7 @@ final class VersionTag implements TagInterface
     public function execute(Fragment|Playlist $entity): void
     {
         if ($entity instanceof Playlist && null !== $this->version) {
-            $entity->attributes["VERSION"] = $this->version;
+            $entity->attributes[AttributeEnum::VERSION] = $this->version;
         }
     }
 

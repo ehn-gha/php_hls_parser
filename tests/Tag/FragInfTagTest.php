@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ehngha\Test\Lib\Hls\Tag;
 
+use Ehngha\Lib\Hls\Entity\AttributeEnum;
 use Ehngha\Lib\Hls\Entity\Fragment;
 use Ehngha\Lib\Hls\Entity\FragmentCollection;
 use Ehngha\Lib\Hls\Entity\Playlist;
@@ -34,15 +35,15 @@ final class FragInfTagTest extends TestCase
         $tagInstance->handle($tag, $value, $collection);
         $tagInstance->execute($fragment);
 
-        $this->assertSame(3.00, $fragment->attributes["DURATION"]);
-        $this->assertSame("FOO", $fragment->attributes["TITLE"]);
+        $this->assertSame(3.00, $fragment->attributes[AttributeEnum::DURATION]);
+        $this->assertSame("FOO", $fragment->attributes[AttributeEnum::TITLE]);
         $tagInstance->reset();
 
         $fragment = new Fragment($playlist);
         $tagInstance->execute($fragment);
 
-        $this->assertNull($fragment->attributes["DURATION"] ?? null);
-        $this->assertNull($fragment->attributes["TITLE"] ?? null);
+        $this->assertNull($fragment->attributes[AttributeEnum::DURATION] ?? null);
+        $this->assertNull($fragment->attributes[AttributeEnum::TITLE] ?? null);
     }
 
     public function testHandleExecuteResestWhenDatetimeTag(): void
@@ -57,20 +58,20 @@ final class FragInfTagTest extends TestCase
         $tagInstance->handle($tag, $value, $collection);
         $tagInstance->execute($fragment);
 
-        $this->assertSame(959230461, $fragment->attributes["DATETIME"]);
+        $this->assertSame(959230461, $fragment->attributes[AttributeEnum::DATETIME]);
         $tagInstance->reset();
 
         $fragment = new Fragment($playlist);
         $tagInstance->execute($fragment);
 
-        $this->assertNull($fragment->attributes["DATETIME"] ?? null);
+        $this->assertNull($fragment->attributes[AttributeEnum::DATETIME] ?? null);
 
         $tag = "EXT-X-PROGRAM-DATE-TIME";
         $value = "05-25T04:54:21";
         $tagInstance->handle($tag, $value, $collection);
         $tagInstance->execute($fragment);
 
-        $this->assertNull($fragment->attributes["DATETIME"] ?? null);
+        $this->assertNull($fragment->attributes[AttributeEnum::DATETIME] ?? null);
     }
 
     public function testGetName(): void

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ehngha\Test\Lib\Hls\Tag;
 
+use Ehngha\Lib\Hls\Entity\AttributeEnum;
 use Ehngha\Lib\Hls\Entity\Fragment;
 use Ehngha\Lib\Hls\Entity\FragmentCollection;
 use Ehngha\Lib\Hls\Entity\Playlist;
@@ -31,12 +32,12 @@ final class SequenceTagTest extends TestCase
         $tag = new SequenceTag();
         $tag->handle("EXT-X-MEDIA-SEQUENCE", "41", $collection);
         $tag->execute($fragmentFoo);
-        $this->assertSame(42, $fragmentFoo->attributes["SEQUENCE"]);
+        $this->assertSame(42, $fragmentFoo->attributes[AttributeEnum::SEQUENCE]);
         $tag->handle("EXT-X-DISCONTINUITY-SEQUENCE", "20", $collection);
         $tag->handle("EXT-X-DISCONTINUITY", "", $collection);
         $tag->execute(new Playlist());
         $tag->execute($fragmentBar);
-        $this->assertSame(21, $fragmentBar->attributes["DISCONTINUITY_SEQUENCE"]);
+        $this->assertSame(21, $fragmentBar->attributes[AttributeEnum::DISCONTINUITY_SEQUENCE]);
         $tag->reset();
     }
 

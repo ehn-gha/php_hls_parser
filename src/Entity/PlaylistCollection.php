@@ -37,11 +37,19 @@ final class PlaylistCollection implements JsonSerializable
     public function __construct(private Master $master)
     {}
 
+    /**
+     * Get the master assigned to the playlist collection
+     * @return Master
+     */
     public function getMaster(): Master
     {
         return $this->master;
     }
 
+    /**
+     * Generate an iterator for iterating over the setted playlists
+     * @return Generator
+     */
     public function getPlaylistIterator(): Generator
     {
         foreach ($this->playlists as $playlist) {
@@ -49,6 +57,10 @@ final class PlaylistCollection implements JsonSerializable
         }
     }
 
+    /**
+     * Generate an iterator for iterating over the setted renditions
+     * @return Generator
+     */
     public function getRenditionIterator(): Generator
     {
         foreach ($this->renditions as $rendition) {
@@ -56,16 +68,30 @@ final class PlaylistCollection implements JsonSerializable
         }
     }
 
+    /**
+     * Get a playlist by its index or a criteria
+     * @param string|int $index
+     * @return Playlist|Closure|null
+     */
     public function getPlaylist(string|int $index): Playlist|Closure|null
     {
-        return self::fetch($index, $this->playlists);
+        return self::fetch($index, $this->playlists, true);
     }
 
+    /**
+     * Get a rendition by its index or a criteria
+     * @param string|int $index
+     * @return Playlist|Closure|null
+     */
     public function getRendition(string|int $index): Playlist|Closure|null
     {
-        return self::fetch($index, $this->renditions);
+        return self::fetch($index, $this->renditions, false);
     }
 
+    /**
+     * Add a playlist and assign the master to it
+     * @param Playlist $playlist
+     */
     public function addPlaylist(Playlist $playlist): void
     {
         $playlist->setMaster($this->master);
@@ -76,12 +102,20 @@ final class PlaylistCollection implements JsonSerializable
         ++$this->size;
     }
 
+    /**
+     * Add an rendition and assign the master to it
+     * @param Playlist $playlist
+     */
     public function addRendition(Playlist $playlist): void
     {
         $playlist->setMaster($this->master);
         $this->renditions[] = $playlist;
     }
 
+    /**
+     * Try to determinate the best quality and return it
+     * @return Playlist
+     */
     public function getBestQuality(): Playlist
     {
         $this->current = 0;
@@ -89,6 +123,10 @@ final class PlaylistCollection implements JsonSerializable
         return $this->playlists[$this->current];
     }
 
+    /**
+     * Try to determinate the lowest quality and return it
+     * @return Playlist
+     */
     public function getLowestQuality(): Playlist
     {
         $this->current = $this->size - 1;
@@ -96,11 +134,19 @@ final class PlaylistCollection implements JsonSerializable
         return $this->playlists[$this->current];
     }
 
+    /**
+     * Up the quality considering the current playlist lastly getted
+     * @return Playlist
+     */
     public function upQuality(): Playlist
     {
         return (0 === $this->current) ? $this->playlists[0] : $this->playlists[--$this->current];
     }
 
+    /**
+     * Lower the quality considering the current playlist lastly getted
+     * @return Playlist
+     */
     public function lowerQuality(): Playlist
     {
         return ($this->current === ($this->size - 1)) ? $this->playlists[$this->current] : $this->playlists[++$this->current];
@@ -148,20 +194,22 @@ final class PlaylistCollection implements JsonSerializable
         }
     }
 
-    /**
-     * @param string|int $index
-     * @param array<int, Playlist> $collection
-     * @return Playlist|Closure|null
-     */
-    private static function fetch(string|int $index, array $collection): Playlist|Closure|null
+    private function fetch(string|int $index, array $collection, bool $overwriteCurrent): Playlist|Closure|null
     {
         if (is_int($index)) {
+            if ($overwriteCurrent) {
+                $this->current = $index;
+            }
+
             return $collection[$index] ?? null;
         }
 
-        return function(mixed $value) use ($index, $collection): ?Playlist {
-            foreach ($collection as $playlist) {
+        return function(mixed $value) use ($index, $collection, $overwriteCurrent): ?Playlist {
+            foreach ($collection as $currentIndex => $playlist) {
                 if ( ($playlist->attributes[$index] ?? null) === $value) {
+                    if ($overwriteCurrent) {
+                        $this->current = $currentIndex;
+                    }
                     return $playlist;
                 }
             }

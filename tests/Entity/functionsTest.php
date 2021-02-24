@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace Ehngha\Test\Lib\Hls\Entity;
 
+use Ehngha\Lib\Hls\Entity\AttributeEnum;
 use Ehngha\Lib\Hls\Entity\Master;
+use Ehngha\Lib\Hls\Entity\Playlist;
 use PHPUnit\Framework\TestCase;
+use function Ehngha\Lib\Hls\Entity\is_live;
 
 final class functionsTest extends TestCase
 {
@@ -25,6 +28,17 @@ final class functionsTest extends TestCase
 
         $serialized = \Ehngha\Lib\Hls\Entity\serialize($master);
         $this->assertEquals($master, \Ehngha\Lib\Hls\Entity\unserialize($serialized));
+    }
+
+    public function testIsLive(): void
+    {
+        $entity = new Playlist();
+
+        $this->assertFalse(is_live($entity));
+
+        $entity = new Playlist(attributes: [AttributeEnum::LIVE => true]);
+
+        $this->assertTrue(is_live($entity));
     }
 
 }

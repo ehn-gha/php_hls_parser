@@ -36,6 +36,13 @@ final class Resolver
     private function __construct()
     {}
 
+    /**
+     * Try to resolve a uri from its base
+     * @param string $uri
+     * @param string|null $baseUri
+     * @return string
+     * @throws ResolveException
+     */
     public static function resolve(string $uri, ?string $baseUri = null): string
     {
         $uri = trim($uri);

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ehngha\Test\Lib\Hls\Tag;
 
+use Ehngha\Lib\Hls\Entity\AttributeEnum;
 use Ehngha\Lib\Hls\Entity\Master;
 use Ehngha\Lib\Hls\Entity\Playlist;
 use Ehngha\Lib\Hls\Entity\PlaylistCollection;
@@ -32,12 +33,12 @@ final class VersionTagTest extends TestCase
         $tag = new VersionTag();
         $tag->handle("EXT-X-VERSION", $version, $collection);
         $tag->execute($entity);
-        $this->assertSame(0, $entity->attributes["VERSION"]);
+        $this->assertSame(0, $entity->attributes[AttributeEnum::VERSION]);
         $tag->reset();
 
         $entity = new Playlist();
         $tag->execute($entity);
-        $this->assertNull($entity->attributes["VERSION"] ?? null);
+        $this->assertNull($entity->attributes[AttributeEnum::VERSION] ?? null);
     }
 
     public function testGetName(): void

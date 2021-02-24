@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Ehngha\Lib\Hls\Tag;
 
 use DateTime;
+use Ehngha\Lib\Hls\Entity\AttributeEnum;
 use Ehngha\Lib\Hls\Entity\Fragment;
 use Ehngha\Lib\Hls\Entity\FragmentCollection;
 use Ehngha\Lib\Hls\Entity\Playlist;
@@ -46,14 +47,14 @@ final class FragInfTag implements TagInterface
     public function execute(Fragment|Playlist $entity): void
     {
         if (null !== $this->inf) {
-            $entity->attributes["DURATION"] = (float)$this->inf[0];
+            $entity->attributes[AttributeEnum::DURATION] = (float)$this->inf[0];
             if (isset($this->inf[1][0])) {
-                $entity->attributes["TITLE"] = $this->inf[1];
+                $entity->attributes[AttributeEnum::TITLE] = $this->inf[1];
             }
         }
 
         if (null !== $this->datetime) {
-            $entity->attributes["DATETIME"] = $this->datetime;
+            $entity->attributes[AttributeEnum::DATETIME] = $this->datetime;
         }
     }
 

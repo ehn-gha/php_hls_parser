@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ehngha\Lib\Hls\Entity;
 
+use Ehngha\Lib\Hls\Exception\ResolveException;
 use JsonSerializable;
 use function array_merge;
 use function Ehngha\Lib\Copy\copy;
@@ -49,11 +50,21 @@ final class Playlist implements JsonSerializable
         }
     }
 
+    /**
+     * Set the url and resolve its absolute value if a master is setted
+     * @param string $url
+     * @throws ResolveException
+     */
     public function setUrl(string $url): void
     {
         $this->url = (null !== $this->master) ? resolve_url($url, $this->master->url) : $url;
     }
 
+    /**
+     * Set an encryption and resolve its url if a master is setted
+     * @param Encryption $encryption
+     * @throws ResolveException
+     */
     public function setEncryption(Encryption $encryption): void
     {
         /** @var $encryption Encryption **/
@@ -63,6 +74,10 @@ final class Playlist implements JsonSerializable
         $this->encryption = $encryption;
     }
 
+    /**
+     * Set the master and merge the attributes
+     * @param Master $master
+     */
     public function setMaster(Master $master): void
     {
         $this->master = $master;
@@ -71,6 +86,11 @@ final class Playlist implements JsonSerializable
         $this->attributes = array_merge($master->attributes, $this->attributes);
     }
 
+    /**
+     * Try to compare two playlist using the BANDWIDTH, AVERAGE-BANDWIDTH, RESOLUTION
+     * @param Playlist $playlist
+     * @return int
+     */
     public function compare(Playlist $playlist): int
     {
         foreach (["BANDWIDTH", "AVERAGE-BANDWIDTH"] as $attribute) {

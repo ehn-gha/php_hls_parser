@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ehngha\Lib\Hls\Tag;
 
+use Ehngha\Lib\Hls\Entity\AttributeEnum;
 use Ehngha\Lib\Hls\Entity\Fragment;
 use Ehngha\Lib\Hls\Entity\FragmentCollection;
 use Ehngha\Lib\Hls\Entity\Playlist;
@@ -23,7 +24,7 @@ final class EndlistTag implements TagInterface
 
     public function handle(string $tag, string $tagValue, PlaylistCollection|FragmentCollection $collection): void
     {
-        $collection->getPlaylist()->attributes["IS_LIVE"] = false;
+        $collection->getPlaylist()->attributes[AttributeEnum::LIVE] = false;
     }
 
     public function execute(Fragment|Playlist $entity): void

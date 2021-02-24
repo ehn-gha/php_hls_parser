@@ -33,6 +33,10 @@ final class FragmentCollection implements IteratorAggregate, JsonSerializable, A
     public function __construct(private Playlist $playlist)
     {}
 
+    /**
+     * Get the playlist assigned for the fragments of the collection
+     * @return Playlist
+     */
     public function getPlaylist(): Playlist
     {
         return $this->playlist;

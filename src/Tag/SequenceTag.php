@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ehngha\Lib\Hls\Tag;
 
+use Ehngha\Lib\Hls\Entity\AttributeEnum;
 use Ehngha\Lib\Hls\Entity\Fragment;
 use Ehngha\Lib\Hls\Entity\FragmentCollection;
 use Ehngha\Lib\Hls\Entity\Playlist;
@@ -44,12 +45,12 @@ final class SequenceTag implements TagInterface
         if (!$entity instanceof Fragment) {
             return;
         }
-        if (!isset($entity->attributes["DISCONTINUITY_SEQUENCE"]) && !isset($entity->attributes["SEQUENCE"])) {
+        if (!isset($entity->attributes[AttributeEnum::DISCONTINUITY_SEQUENCE]) && !isset($entity->attributes[AttributeEnum::SEQUENCE])) {
             if ($this->discontinuity) {
-                $entity->attributes["DISCONTINUITY_SEQUENCE"] = ++$this->discontinuitySequence;
+                $entity->attributes[AttributeEnum::DISCONTINUITY_SEQUENCE] = ++$this->discontinuitySequence;
                 $this->discontinuity = false;
             } else {
-                $entity->attributes["SEQUENCE"] = ++$this->sequence;
+                $entity->attributes[AttributeEnum::SEQUENCE] = ++$this->sequence;
             }
         }
     }

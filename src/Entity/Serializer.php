@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Ehngha\Lib\Hls\Entity;
 
 use Ehngha\Lib\Hls\Exception\InvalidEntityException;
+use JsonException;
 use function is_string;
 use function json_decode;
 use function json_encode;
@@ -25,11 +26,23 @@ final class Serializer
     private function __construct()
     {}
 
+    /**
+     * Serialize the given entity
+     * @param Master|Playlist|Encryption|PlaylistCollection|Fragment|FragmentCollection $entity
+     * @return string
+     * @throws JsonException
+     */
     public static function serialize(Master|Playlist|Encryption|PlaylistCollection|Fragment|FragmentCollection $entity): string
     {
         return json_encode($entity, JSON_THROW_ON_ERROR);
     }
 
+    /**
+     * Restore the given entity from it serialized representation
+     * @param string|array|null $entity
+     * @return Master|Playlist|Encryption|PlaylistCollection|Fragment|FragmentCollection|null
+     * @throws InvalidEntityException
+     */
     public static function unserialize(string|array|null $entity):
         Master|Playlist|Encryption|PlaylistCollection|Fragment|FragmentCollection|null
     {

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ehngha\Lib\Hls\Entity;
 
+use Ehngha\Lib\Hls\Exception\ResolveException;
 use JsonSerializable;
 use function Ehngha\Lib\Hls\Url\resolve_url;
 
@@ -43,11 +44,22 @@ final class Fragment implements JsonSerializable
         }
     }
 
+    /**
+     * Set the url and resolve its absolute value if a playlist is setted
+     * @param string $url
+     * @throws ResolveException
+     */
     public function setUrl(string $url): void
     {
         $this->url = (null !== $this->playlist) ? resolve_url($url, $this->playlist->url) : $url;
     }
 
+    /**
+     * Set the encryption.
+     * The encryption url will be resolved if a playlist is setted
+     * @param Encryption $encryption
+     * @throws ResolveException
+     */
     public function setEncryption(Encryption $encryption): void
     {
         /** @var $encryption Encryption **/

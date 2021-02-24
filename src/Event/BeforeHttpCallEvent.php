@@ -24,6 +24,12 @@ use Ehngha\Lib\Hls\Entity\Playlist;
 final class BeforeHttpCallEvent
 {
 
+    /**
+     * BeforeHttpCallEvent constructor.
+     * @param Master|Playlist|Encryption|Fragment $entity
+     * @param string $httpMethod
+     * @param array $httpOptions
+     */
     public function __construct(
         public Master|Playlist|Encryption|Fragment $entity,
         public string $httpMethod = "GET",

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Ehngha\Test\Lib\Hls\Tag;
 
+use Ehngha\Lib\Hls\Entity\AttributeEnum;
 use Ehngha\Lib\Hls\Entity\Fragment;
 use Ehngha\Lib\Hls\Entity\FragmentCollection;
 use Ehngha\Lib\Hls\Entity\Playlist;
@@ -28,7 +29,7 @@ final class EndlistTagTest extends TestCase
         $collection = new FragmentCollection($playlist);
         $tag = new EndlistTag();
         $tag->handle("EXT-X-ENDLIST", "", $collection);
-        $this->assertFalse($playlist->attributes["IS_LIVE"]);
+        $this->assertFalse($playlist->attributes[AttributeEnum::LIVE]);
         $tag->execute(new Fragment($playlist));
         $tag->reset();
     }
