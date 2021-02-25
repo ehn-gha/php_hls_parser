@@ -30,7 +30,7 @@ final class PlaylistCollectionTest extends TestCase
         $this->assertSame($master, $collection->getMaster());
     }
 
-    public function testAddGetGetIterator(): void
+    public function testAddGetGetIteratorCount(): void
     {
         $master = new Master("foo", "foo://bar.foo/");
         $playlistFoo = new Playlist(attributes: ["BANDWIDTH" => 120]);
@@ -40,15 +40,19 @@ final class PlaylistCollectionTest extends TestCase
         $playlistMoz = new Playlist(attributes: ["BANDWIDTH" => 520]);
         $playlistMoz->setUrl("doz/poz");
         $collection = new PlaylistCollection($master);
+        $this->assertSame(0, $collection->countPlaylists());
         $collection->addPlaylist($playlistFoo);
         $collection->addPlaylist($playlistBar);
         $collection->addPlaylist($playlistMoz);
+        $this->assertSame(3, $collection->countPlaylists());
         $renditionFoo = new Playlist(attributes: ["DEFAULT" => "1"]);
         $renditionFoo->setUrl("foo://bar.foo");
         $renditionBar = new Playlist();
         $renditionBar->setUrl("bar://bar.foo");
+        $this->assertSame(0, $collection->countRenditions());
         $collection->addRendition($renditionFoo);
         $collection->addRendition($renditionBar);
+        $this->assertSame(2, $collection->countRenditions());
 
         $this->assertSame([$playlistBar, $playlistMoz, $playlistFoo], iterator_to_array($collection->getPlaylistIterator()));
         $this->assertSame([$renditionFoo, $renditionBar], iterator_to_array($collection->getRenditionIterator()));

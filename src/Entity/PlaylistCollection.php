@@ -17,6 +17,7 @@ use Closure;
 use Generator;
 use JsonSerializable;
 use function array_map;
+use function count;
 use function is_int;
 use function usort;
 
@@ -150,6 +151,24 @@ final class PlaylistCollection implements JsonSerializable
     public function lowerQuality(): Playlist
     {
         return ($this->current === ($this->size - 1)) ? $this->playlists[$this->current] : $this->playlists[++$this->current];
+    }
+
+    /**
+     * Count the setted playlists
+     * @return int
+     */
+    public function countPlaylists(): int
+    {
+        return count($this->playlists);
+    }
+
+    /**
+     * Count the setted renditions
+     * @return int
+     */
+    public function countRenditions(): int
+    {
+        return count($this->renditions);
     }
 
     public function jsonSerialize(): array
