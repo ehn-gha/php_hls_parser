@@ -16,6 +16,7 @@ namespace Ehngha\Test\Lib\Hls\Entity;
 use Ehngha\Lib\Hls\Entity\Master;
 use Ehngha\Lib\Hls\Entity\Playlist;
 use Ehngha\Lib\Hls\Entity\PlaylistCollection;
+use Ehngha\Lib\Hls\Exception\LogicException;
 use PHPUnit\Framework\TestCase;
 use function iterator_to_array;
 
@@ -66,6 +67,38 @@ final class PlaylistCollectionTest extends TestCase
         $this->assertNull($collection->getRendition(42));
         $this->assertNull($collection->getPlaylist("BANDWIDTH")(45200));
         $this->assertNull($collection->getRendition("BANDWIDTH")(45200));
+
+        $this->assertSame($playlistBar, $collection->removePlaylist(0));
+        $this->assertSame($renditionFoo, $collection->removeRendition(0));
+
+        $this->assertNull($collection->getPlaylist(0));
+        $this->assertNull($collection->getRendition(0));
+    }
+
+    public function testMerge(): void
+    {
+        $master = new Master();
+        $collectionFoo = new PlaylistCollection($master);
+        $collectionFoo->addPlaylist(new Playlist());
+        $collectionFoo->addRendition(new Playlist());
+        $collectionBar = new PlaylistCollection($master);
+        $collectionBar->addPlaylist(new Playlist());
+        $collectionBar->addRendition(new Playlist());
+
+        $merged = $collectionFoo->merge($collectionBar);
+
+        $this->assertSame(2, $merged->countPlaylists());
+        $this->assertSame(2, $merged->countRenditions());
+    }
+
+    public function testMergeWhenMasterNotCompatible(): void
+    {
+        $this->expectException(LogicException::class);
+
+        $collectionFoo = new PlaylistCollection(new Master("foo"));
+        $collectionBar = new PlaylistCollection(new Master("bar"));
+
+        $collectionFoo->merge($collectionBar);
     }
 
     public function testHandleQuality(): void

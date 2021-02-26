@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Ehngha\Lib\Hls\Entity;
 
 use Closure;
+use Ehngha\Lib\Hls\Exception\LogicException;
 use Generator;
 use JsonSerializable;
 use function array_map;
@@ -114,6 +115,59 @@ final class PlaylistCollection implements JsonSerializable
     }
 
     /**
+     * Remove a playlist from the collection by its index
+     * @param int $index
+     * @return Playlist|null
+     *   The removed playlist
+     */
+    public function removePlaylist(int $index): ?Playlist
+    {
+        $playlist = $this->playlists[$index] ?? null;
+        unset($this->playlists[$index]);
+
+        return $playlist;
+    }
+
+    /**
+     * Remove a rendition from the collection by its index
+     * @param int $index
+     * @return Playlist|null
+     *   The removed rendition
+     */
+    public function removeRendition(int $index): ?Playlist
+    {
+        $playlist = $this->renditions[$index];
+        unset($this->renditions[$index]);
+
+        return $playlist;
+    }
+
+    /**
+     * Merge this collection with the given one.
+     * Playlists are never copied
+     * @param PlaylistCollection $collection
+     * @return PlaylistCollection
+     * @throws LogicException
+     */
+    public function merge(PlaylistCollection $collection): PlaylistCollection
+    {
+        if ($collection->master != $this->master) {
+            throw new LogicException("Given collection master is not compatible with the current collection one");
+        }
+
+        $merged = new PlaylistCollection($this->master);
+        foreach (["addPlaylist" => "playlists", "addRendition" => "renditions"] as $method => $property) {
+            foreach ([$this->{$property}, $collection->{$property}] as $playlists) {
+                foreach ($playlists as $playlist) {
+                    $merged->{$method}($playlist);
+                }
+            }
+        }
+
+        return $merged;
+    }
+
+    /**
      * Try to determinate the best quality and return it
      * @return Playlist
      */
@@ -159,7 +213,7 @@ final class PlaylistCollection implements JsonSerializable
      */
     public function countPlaylists(): int
     {
-        return count($this->playlists);
+        return $this->size;
     }
 
     /**
