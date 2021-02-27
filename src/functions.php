@@ -26,7 +26,7 @@ use function preg_match_all;
 function generate_hls_tag_attributes(string $attributes): array
 {
     $matches = [];
-    preg_match_all('#([A-Z]+)="([^"]+)",?|([A-Z]+)=([^,]+),?#', $attributes, $matches);
+    preg_match_all('#([A-Z-]+)="([^"]+)",?|([A-Z]+)=([^,]+),?#', $attributes, $matches);
 
     return array_filter(array_merge(
         array_combine($matches[1] ?? [], $matches[2] ?? []),
