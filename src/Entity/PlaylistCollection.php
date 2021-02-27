@@ -143,6 +143,45 @@ final class PlaylistCollection implements JsonSerializable
     }
 
     /**
+     * Extract playlists from the collection by their indexes
+     * Playlists are never sorted into the generated collection
+     * @param int ...$playlists
+     * @return PlaylistCollection
+     * @throws LogicException
+     */
+    public function extractPlaylists(int... $playlists): PlaylistCollection
+    {
+        $collection = new PlaylistCollection($this->master);
+        foreach ($playlists as $playlist) {
+            if (!isset($this->playlists[$playlist])) {
+                throw new LogicException("No playlist found at index '{$playlist}'");
+            }
+            $collection->playlists[] = $this->playlists[$playlist];
+        }
+
+        return $collection;
+    }
+
+    /**
+     * Extract renditions from the collection by their indexes
+     * @param int ...$renditions
+     * @return PlaylistCollection
+     * @throws LogicException
+     */
+    public function extractRenditions(int... $renditions): PlaylistCollection
+    {
+        $collection = new PlaylistCollection($this->master);
+        foreach ($renditions as $rendition) {
+            if (!isset($this->renditions[$rendition])) {
+                throw new LogicException("No rendition found at index '{$rendition}'");
+            }
+            $collection->renditions[] = $this->renditions[$rendition];
+        }
+
+        return $collection;
+    }
+
+    /**
      * Merge this collection with the given one.
      * Playlists are never copied
      * @param PlaylistCollection $collection
@@ -213,7 +252,7 @@ final class PlaylistCollection implements JsonSerializable
      */
     public function countPlaylists(): int
     {
-        return $this->size;
+        return (0 !== $this->size) ? $this->size : ($this->size = count($this->playlists));
     }
 
     /**

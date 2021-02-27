@@ -75,6 +75,57 @@ final class PlaylistCollectionTest extends TestCase
         $this->assertNull($collection->getRendition(0));
     }
 
+    public function testExtractPlaylists(): void
+    {
+        $playlistFoo = new Playlist();
+        $playlistBar = new Playlist();
+        $playlistMoz = new Playlist();
+        $collection = new PlaylistCollection(new Master());
+        foreach ([$playlistFoo, $playlistBar, $playlistMoz] as $playlist) {
+            $collection->addPlaylist($playlist);
+        }
+
+        $extracted = $collection->extractPlaylists(0, 2);
+
+        $this->assertSame($playlistFoo, $extracted->getPlaylist(0));
+        $this->assertSame($playlistMoz, $extracted->getPlaylist(1));
+
+        $this->assertSame(2, $extracted->countPlaylists());
+    }
+
+    public function testExtractPlaylistsWhenIndexInvalid(): void
+    {
+        $this->expectException(LogicException::class);
+
+        $collection = new PlaylistCollection(new Master());
+        $collection->extractPlaylists(0);
+    }
+
+    public function testExtractRenditions(): void
+    {
+        $renditionFoo = new Playlist();
+        $renditionBar = new Playlist();
+        $renditionMoz = new Playlist();
+        $collection = new PlaylistCollection(new Master());
+        foreach ([$renditionFoo, $renditionBar, $renditionMoz] as $rendition) {
+            $collection->addRendition($rendition);
+        }
+
+        $extracted = $collection->extractRenditions(0, 2);
+        $this->assertSame($renditionFoo, $extracted->getRendition(0));
+        $this->assertSame($renditionMoz, $extracted->getRendition(1));
+
+        $this->assertSame(2, $extracted->countRenditions());
+    }
+
+    public function testExtractRenditionsWhenIndexInvalid(): void
+    {
+        $this->expectException(LogicException::class);
+
+        $collection = new PlaylistCollection(new Master());
+        $collection->extractRenditions(0);
+    }
+
     public function testMerge(): void
     {
         $master = new Master();
