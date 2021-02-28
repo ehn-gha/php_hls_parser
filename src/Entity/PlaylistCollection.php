@@ -124,6 +124,8 @@ final class PlaylistCollection implements JsonSerializable
     {
         $playlist = $this->playlists[$index] ?? null;
         unset($this->playlists[$index]);
+        $this->current = null;
+        $this->size = count($this->playlists);
 
         return $playlist;
     }
