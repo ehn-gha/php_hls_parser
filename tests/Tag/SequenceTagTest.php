@@ -32,10 +32,17 @@ final class SequenceTagTest extends TestCase
         $tag = new SequenceTag();
         $tag->handle("EXT-X-MEDIA-SEQUENCE", "41", $collection);
         $tag->execute($fragmentFoo);
+        $this->assertSame(41, $fragmentFoo->attributes[AttributeEnum::SEQUENCE]);
+        $fragmentFoo->attributes = [];
+        $tag->execute($fragmentFoo);
         $this->assertSame(42, $fragmentFoo->attributes[AttributeEnum::SEQUENCE]);
         $tag->handle("EXT-X-DISCONTINUITY-SEQUENCE", "20", $collection);
         $tag->handle("EXT-X-DISCONTINUITY", "", $collection);
         $tag->execute(new Playlist());
+        $tag->execute($fragmentBar);
+        $this->assertSame(20, $fragmentBar->attributes[AttributeEnum::DISCONTINUITY_SEQUENCE]);
+        $tag->handle("EXT-X-DISCONTINUITY", "", $collection);
+        $fragmentBar->attributes = [];
         $tag->execute($fragmentBar);
         $this->assertSame(21, $fragmentBar->attributes[AttributeEnum::DISCONTINUITY_SEQUENCE]);
         $tag->reset();

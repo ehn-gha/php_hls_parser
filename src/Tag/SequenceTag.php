@@ -47,10 +47,10 @@ final class SequenceTag implements TagInterface
         }
         if (!isset($entity->attributes[AttributeEnum::DISCONTINUITY_SEQUENCE]) && !isset($entity->attributes[AttributeEnum::SEQUENCE])) {
             if ($this->discontinuity) {
-                $entity->attributes[AttributeEnum::DISCONTINUITY_SEQUENCE] = ++$this->discontinuitySequence;
+                $entity->attributes[AttributeEnum::DISCONTINUITY_SEQUENCE] = $this->discontinuitySequence++;
                 $this->discontinuity = false;
             } else {
-                $entity->attributes[AttributeEnum::SEQUENCE] = ++$this->sequence;
+                $entity->attributes[AttributeEnum::SEQUENCE] = $this->sequence++;
             }
         }
     }
