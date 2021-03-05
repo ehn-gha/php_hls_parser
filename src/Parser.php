@@ -27,6 +27,7 @@ use Ehngha\Lib\Hls\Tag\MediaTag;
 use Ehngha\Lib\Hls\Tag\SequenceTag;
 use Ehngha\Lib\Hls\Tag\StreamInfTag;
 use Ehngha\Lib\Hls\Tag\TagInterface;
+use Ehngha\Lib\Hls\Tag\TypeTag;
 use Ehngha\Lib\Hls\Tag\VersionTag;
 use Generator;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -158,7 +159,8 @@ final class Parser implements ParserInterface
             new SequenceTag(),
             new StreamInfTag(),
             new VersionTag(),
-            new EndlistTag()
+            new EndlistTag(),
+            new TypeTag()
         ]);
     }
 

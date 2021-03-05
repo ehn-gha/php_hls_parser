@@ -18,6 +18,7 @@ interface AttributeEnum
 
     /**
      * HLS version
+     * @see https://tools.ietf.org/html/draft-pantos-http-live-streaming-23#section-4.3.1.2
      */
     public const VERSION = "VERSION";
 
@@ -38,6 +39,7 @@ interface AttributeEnum
 
     /**
      * Fragment datetime
+     * @see https://tools.ietf.org/html/draft-pantos-http-live-streaming-23#section-4.3.2.6
      */
     public const DATETIME = "DATETIME";
 
@@ -50,5 +52,11 @@ interface AttributeEnum
      * Fragment discontinuity sequence
      */
     public const DISCONTINUITY_SEQUENCE = "DISCONTINUITY_SEQUENCE";
+
+    /**
+     * Playlist type
+     * @see https://tools.ietf.org/html/draft-pantos-http-live-streaming-23#section-4.3.3.5
+     */
+    public const TYPE = "PLAYLIST_TYPE";
 
 }
