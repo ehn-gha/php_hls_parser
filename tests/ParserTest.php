@@ -137,7 +137,7 @@ final class ParserTest extends TestCase
 
         $tags = $reflection->getProperty("tags");
         $tags->setAccessible(true);
-        $this->assertSame(11, count($tags->getValue($parser)));
+        $this->assertSame(12, count($tags->getValue($parser)));
     }
 
 }
